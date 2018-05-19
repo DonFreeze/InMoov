@@ -1,11 +1,9 @@
 # InMoove
 InMoove robot controll with Raspberry Pi 3 and Arduino Mega.
 
-   _______     I²C    _______
-  | Raspi | <------> |Arduino|  
-  |_______|          |_______|
-
-
+        
+  | Raspi | <---I²C---> |Arduino|  
+    
 
 
 Tasks of Arduino:
