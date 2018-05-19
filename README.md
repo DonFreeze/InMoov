@@ -15,7 +15,10 @@ Tasks of Arduino:
 
 Libraries:
 https://maker.pro/files/MPU6050.zip
+
 https://maker.pro/files/I2Cdev.zip
+
+https://maker.pro/arduino/tutorial/how-to-interface-arduino-and-the-mpu-6050-sensor
 
 Tasks of Raspberry Pi
 - Camera processing, like face recognition
