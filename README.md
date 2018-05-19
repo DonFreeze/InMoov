@@ -13,6 +13,10 @@ Tasks of Arduino:
 - I2C slave
 - ...
 
+Libraries:
+https://maker.pro/files/MPU6050.zip
+https://maker.pro/files/I2Cdev.zip
+
 Tasks of Raspberry Pi
 - Camera processing, like face recognition
 - Microphon processing, like sound source lokation
