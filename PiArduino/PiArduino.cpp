@@ -5,14 +5,14 @@
 #include <fcntl.h>
 #include <termios.h>
 
-const int messageLength = 6;
+const int maxMessageLength = 1 + 1 + 4 + 1;//Identifierer + OP Type + Value, \0
 int verify = 0;
 
 void showHelp(char* progName){
     printf("Usage: %s [OPTION] . . . \n", progName);
     printf("Usage without parameter will send a Ping with standard parameters\n\n");
     printf("-h \t\tShows this help\n");
-    printf("-m message\t%d Byte message send to Arduino\n",messageLength);
+    printf("-m message\t%d Byte message send to Arduino\n",maxMessageLength);
     printf("-b baudrate\tBaudrate for the connection, standard is B9600\n");
     printf("-p port\t\tUSB Port Arduino is connected, standard is ttyAMA0\n");
     printf("-v \t\tMore informations are displayed during run\n");
@@ -23,7 +23,7 @@ void printv(const char *text){
         printf("%s", text);
 }
 
-int rxUART(int uart0_filestream, char message[messageLength]){
+int rxUART(int uart0_filestream, char message[maxMessageLength]){
 //----- CHECK FOR ANY RX BYTES -----
 	//if (uart0_filestream != -1)
 	//{
@@ -53,10 +53,10 @@ int rxUART(int uart0_filestream, char message[messageLength]){
     return -20;
 }
 
-int txUART(int uart0_filestream, char message[messageLength]){
+int txUART(int uart0_filestream, char message[maxMessageLength]){
 	
 	if (uart0_filestream != -1){
-		int count = write(uart0_filestream, &message[0], messageLength);		//Filestream, bytes to write, number of bytes to write
+		int count = write(uart0_filestream, &message[0], maxMessageLength);		//Filestream, bytes to write, number of bytes to write
 		if (count < 0){
 		    printv("UART TX error\n");
             return -11;
@@ -94,18 +94,15 @@ int main(int argc, char* argv[]){
 
     char *port = "/dev/ttyAMA0"; 
     int baud = B9600;
-    char message[messageLength];
-    message[0] = 'H';
-    message[1] = 'E';
-    message[2] = 'L';
-    message[3] = 'L';
-    message[4] = 'o';
-    message[messageLength-1] = '\0';
+    char message[maxMessageLength];
+    
+    for(int i=0; i<maxMessageLength; i++)
+        message[i] = '\0';
 
     while((option = getopt(argc, argv, "m:b:p:hv")) != -1){
 		switch(option){
 			case 'm':
-                if(strlen(optarg) >= messageLength){
+                if(strlen(optarg) >= maxMessageLength){
                     printf("Message to long!\n");
                     return -1;
                 }
