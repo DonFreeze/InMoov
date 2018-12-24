@@ -1,14 +1,14 @@
 
 all: uart
 
-uart: Uart.o main.o 
-	gcc Uart.o main.o -o uart
+uart: uart.o main.o 
+	gcc uart.o main.o -o uart
 
-main.o: main.cpp Uart.hpp
-	gcc -c main.cpp
+main.o: main.c uart.h
+	gcc -c main.c
 
-Uart.o: Uart.hpp Uart.cpp
-	gcc -c Uart.cpp
+Uart.o: uart.h uart.c
+	gcc -c uart.c
 
 clean:
-	$(RM) uart main.o Uart.o
+	$(RM) uart main.o uart.o
