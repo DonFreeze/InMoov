@@ -6,6 +6,15 @@ void printv(const char *text){
         printf("%s", text);
 }
 
+int checkRecivedMessage(char *recivedMessage, char *sendMessage){
+	if(strstr(recivedMessage, sendMessage))
+		return 0;
+	else{
+		printv("Messages not equal!\n");
+		return -1;
+	}
+}
+
 int rxUART(int uart0_filestream, char message[maxMessageLength]){
 //----- CHECK FOR ANY RX BYTES -----
 	//if (uart0_filestream != -1)
@@ -22,17 +31,13 @@ int rxUART(int uart0_filestream, char message[maxMessageLength]){
 		}else{
 			//Bytes received
 			rx_buffer[rx_length] = '\0';
-            if(strstr(message, rx_buffer)){
-                return 0;
-            }else{
-                if(verify)
-			        printf("%i bytes read : %s\n", rx_length, rx_buffer);
-                return -21;
-            }
+			//if(verify)
+				printf("%i bytes read : %s\n", rx_length, rx_buffer);
+			return checkRecivedMessage(rx_buffer, message);
 		}
         usleep(50000);
 	}
-    printv("No return value for message!\n");
+    printf("No return from message!\n");
     return -20;
 }
 
@@ -41,7 +46,7 @@ int txUART(int uart0_filestream, char message[maxMessageLength], int messageLeng
 	if (uart0_filestream != -1){
 		int count = write(uart0_filestream, &message[0], messageLength);		//Filestream, bytes to write, number of bytes to write
 		if (count < 0){
-		    printv("UART TX error\n");
+		    printf("UART TX error\n");
             return -11;
 		}
         return rxUART(uart0_filestream, message);
@@ -51,10 +56,9 @@ int txUART(int uart0_filestream, char message[maxMessageLength], int messageLeng
 
 int setupUART(int baud, char *port){
 	int uart0_filestream = -1;
-
 	uart0_filestream = open(port, O_RDWR | O_NOCTTY | O_NDELAY);		//Open in non blocking read/write mode
 	if (uart0_filestream == -1){
-	    printv("Error - Unable to open UART.  Ensure it is not in use by another application\n");
+	    printf("Error - Unable to open UART.  Ensure it is not in use by another application\n");
         return -1;
 	}
 	
