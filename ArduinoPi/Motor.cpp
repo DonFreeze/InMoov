@@ -1,5 +1,5 @@
 #include "Servo.h"
-#include "Motor"
+#include "Motor.h"
 //#include <Serial.h>
 
 #if defined(ARDUINO) && ARDUINO >= 100
@@ -11,9 +11,17 @@
 
 
 
-void Motor::Motor(int pin, int angle)
+void Motor::init(int set_pin, int set_angle, int set_max_angle, int set_min_angle)
 {
-    myservo.attach(9);  // attaches the servo on pin 9 to the servo object
+    myservo.attach(set_pin);  // attaches the servo on pin 9 to the servo object
+
+    max_angle = set_max_angle;
+    min_angle = set_min_angle; 
+    pin = set_pin;
+    setAngle(set_angle);
+    
+
+
 }
 
 /* Sets the angle between 0 and 180 degree*/

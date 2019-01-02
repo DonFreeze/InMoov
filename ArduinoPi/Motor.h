@@ -8,7 +8,7 @@ class Motor
 {
 
 public:
-    void Motor(int pin, int initial_angle, int max_angle, int min_angle);   // constructor of the Motor class
+    void init(int pin, int initial_angle, int max_angle, int min_angle);   // constructor of the Motor class
     void setAngle(int angle);                                               // sets the angle
     int getAngle();                                                         // returns the currently set angle value
     
