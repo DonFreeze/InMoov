@@ -1,17 +1,19 @@
 /* Robo Project
  * Servo Motor Class
  */
-#include "Motor.h"
-#include "Arduino.h"
 
+#include "Arduino.h"
+#include "Motor.h"
 
 class MotorManager
 {
 
 public:
-    int setNewPosition(int* values);
+    MotorManger();
     void init();
+    void updateMotors(int* values); 
 private:
-
-    Motor motor[5]; 
+    int num_motors;
+    Motor motor[5];
+    
 };
