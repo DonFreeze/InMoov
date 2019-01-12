@@ -1,17 +1,20 @@
 #include "uart.h"
 
 
-void printv(const char *text){
-    if(verify)
-        printf("%s", text);
-}
-
 int checkRecivedMessage(char *recivedMessage, char *sendMessage){
-	if(strstr(recivedMessage, sendMessage))
+	if(recivedMessage[1] != sendMessage[1]){
+		printv("Return Error Componend\n");
+		return ERROR_COMPONEND;
+	}else if(recivedMessage[2] != sendMessage[2]){
+		printv("Return Error OP-Type\n");
+		return ERROR_OPTYPE;
+	}else if(recivedMessage[3] != sendMessage[3]){
+		printv("Return Error Typenumber\n");
+		return ERROR_TYPENUMBER;			
+	}else{
+		//no error in message, return Data when read message
+		//TODO
 		return 0;
-	else{
-		printv("Messages not equal!\n");
-		return -1;
 	}
 }
 
@@ -31,14 +34,17 @@ int rxUART(int uart0_filestream, char message[maxMessageLength]){
 		}else{
 			//Bytes received
 			rx_buffer[rx_length] = '\0';
-			//if(verify)
-				printf("%i bytes read : %s\n", rx_length, rx_buffer);
+			if(verify){
+				printf("%i bytes read :\n", rx_length);
+				for(int i=0; i<rx_length;i++)
+                    printf("message[%d]: %d\n",i, rx_buffer[i]);
+			}
 			return checkRecivedMessage(rx_buffer, message);
 		}
         usleep(50000);
 	}
     printf("No return from message!\n");
-    return -20;
+    return ERROR_NO_RETURN_MESSAGE;
 }
 
 int txUART(int uart0_filestream, char message[maxMessageLength], int messageLength){
@@ -47,11 +53,11 @@ int txUART(int uart0_filestream, char message[maxMessageLength], int messageLeng
 		int count = write(uart0_filestream, &message[0], messageLength);		//Filestream, bytes to write, number of bytes to write
 		if (count < 0){
 		    printf("UART TX error\n");
-            return -11;
+            return ERROR_TXUART;
 		}
         return rxUART(uart0_filestream, message);
 	}
-    return -10;
+    return ERROR_TXUART_CLOSED;
 }
 
 int setupUART(int baud, char *port){
@@ -59,9 +65,9 @@ int setupUART(int baud, char *port){
 	uart0_filestream = open(port, O_RDWR | O_NOCTTY | O_NDELAY);		//Open in non blocking read/write mode
 	if (uart0_filestream == -1){
 	    printf("Error - Unable to open UART.  Ensure it is not in use by another application\n");
-        return -1;
+        return ERROR_OPEN_UART;
 	}
-	
+
 	struct termios options;
 	tcgetattr(uart0_filestream, &options);
 	options.c_cflag = baud | CS8 | CLOCAL | CREAD;		//<Set baud rate
