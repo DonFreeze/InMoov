@@ -21,22 +21,28 @@ void loop(){
 void checkRecivedChar(char recived){
   if(recived == MSG_END){
       if(messageLength > MAX_MSG_LENGTH){
-        Serial.println(ERROR_MsgToLong);
+        Serial.println(buildErrorString(command[1], ERROR_MSG_LENGTH));
         return;
       }
       interpret(&command[0]);
       messageLength = 0;
       memset(&command[0], 0, MAX_MSG_LENGTH);
-  }else if(recived == MSG_SRT && messageLength>0){
-      Serial.println(ERROR_NoMsgEnd);
-      messageLength=0;  //Fehlerhafte message ohne endezeichen wird verworfen
-      memset(&command[0], 0, MAX_MSG_LENGTH);
-      command[messageLength] = recived;
-      messageLength++;
   }else{
       command[messageLength] = recived;
       messageLength++;
   }      
+}
+
+char* buildErrorString(char id, char errorType){
+    char msg[6];
+    msg[0] = 0x255;
+    msg[1] = id;
+    msg[2] = ERROR_ASW;
+    msg[3] = errorType;
+    msg[4] = 0x255;
+    msg[5] = '\n';
+
+    return (char*)  &msg[0];
 }
 
 

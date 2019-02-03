@@ -1,5 +1,4 @@
 #include "interpreter.h"
-//#include <Serial.h>
 
 #if defined(ARDUINO) && ARDUINO >= 100
   #include "Arduino.h"
@@ -7,6 +6,7 @@
   #include "WProgram.h"
 #endif
 
+char *start;
 char *componend;
 char *opType;
 char *typeNumber;
@@ -31,10 +31,7 @@ void eyeWrite(){
 
 void interpret(char *command){
 
-    if(command[0] != MSG_SRT){
-      Serial.println(ERROR_NoMsgStart);
-      return;
-    }
+    start = &command[0];
     componend = &command[1];
     opType = &command[2];
     typeNumber = &command[3];
@@ -43,29 +40,35 @@ void interpret(char *command){
     
     switch(componend[0]){
         case MOTOR:
-            if(opType[0] == 'R')
+            if(opType[0] == READ)
                 motorRead();
-            else if(opType[0] == 'W')
+            else if(opType[0] == WRITE)
                 motorWrite();
             else
-                Serial.println(ERROR_MsgOpType);
+                Serial.println(buildErrorString(componend, ERROR_OPTYPE));
             break;
         case EYE:
-            if(opType[0] == 'R')
+            if(opType[0] == READ)
                 eyeRead();
-            else if(opType[0] == 'W')
+            else if(opType[0] == WRITE)
                 eyeWrite();
             else
-                Serial.println(ERROR_MsgOpType);
+                Serial.println(buildErrorString(componend, ERROR_OPTYPE));
             break;
         case STATUS:
-            Serial.println(STATUS_MSG);
+            Serial.println(buildAnswerString());
             break;
         default:
-            Serial.println(ERROR_NoComponendMatch);
+            Serial.println(buildErrorString(componend, ERROR_COMPONEND));
             break;
     }
     Serial.println(command);
+}
+
+char* buildAnswerString(){
+    typeNumber = 0x255;
+    data1 = '\n';
+    return start;
 }
 
 
