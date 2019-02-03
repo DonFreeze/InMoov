@@ -17,9 +17,9 @@
 
 // ERROR Codes
 #define ERROR_ASW            'F'
-#define ERROR_MSG_LENGTH      1
-#define ERROR_COMPONEND       2
-#define ERROR_OPTYPE          3
+#define ERROR_MSG_LENGTH      0x01
+#define ERROR_COMPONEND       0x02
+#define ERROR_OPTYPE          0x03
 
 
 void interpret(char*);

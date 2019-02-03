@@ -2,15 +2,30 @@
 
 
 int checkRecivedMessage(char *recivedMessage, char *sendMessage){
-	if(recivedMessage[1] != sendMessage[1]){
-		printv("Return Error Componend\n");
-		return ERROR_COMPONEND;
-	}else if(recivedMessage[2] != sendMessage[2]){
-		printv("Return Error OP-Type\n");
-		return ERROR_OPTYPE;
-	}else if(recivedMessage[3] != sendMessage[3]){
-		printv("Return Error Typenumber\n");
-		return ERROR_TYPENUMBER;			
+	if(recivedMessage[1] != sendMessage[1] ||
+		recivedMessage[2] != sendMessage[2]){
+
+		printv("Recived != Send\n");
+		return -1;
+	}
+	else if(recivedMessage[2] == ERROR_ASW){
+		switch(recivedMessage[3]){
+			case ERROR_MSG_LENGTH:
+				printf("Send message to long!\n"); 
+				return ERROR_MSG_LENGTH * (-1);
+
+			case ERROR_COMPONEND:
+				printf("Error Componend!\n"); 
+				return ERROR_COMPONEND * (-1);
+
+			case ERROR_OPTYPE:
+				printf("Error OP Type!\n"); 
+				return ERROR_OPTYPE * (-1);
+
+			default:
+				printf("Undefined Error returned!\n");
+				return -1;
+		}
 	}else{
 		//no error in message, return Data when read message
 		//TODO

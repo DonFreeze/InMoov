@@ -36,29 +36,13 @@ int main(int argc, char* argv[]){
                 message[i] = value & 0xFF;
                 value >>= 8;            
             }
-            message[messageLength-1] = '\n';
+            message[messageLength-1] = MSG_END;
 
             if(verify){
                 for(int i=0; i<messageLength;i++)
                     printf("message[%d]: %d\n",i,message[i]);
             }
             break;	 
-        case 's':
-            messageLength = strlen(optarg) + 2;
-            if(messageLength >= maxMessageLength){
-                printf("Message to long!\n");
-                return -2;
-            }
-            //create message array, better way?
-            char *temp = (char*) malloc(messageLength);
-            strncpy(temp, "S", 1);
-            strncat(temp, optarg, strlen(optarg));
-            strncat(temp, "\n", 1);
-            strncpy(message, temp, messageLength);
-
-            if(verify)
-                printf("message: %s\n",message);  
-            break; 
         case 'b':
             baud = atoi(optarg);
             if(verify)
@@ -101,10 +85,10 @@ int main(int argc, char* argv[]){
     return messageReturn;
 }
 
-void initStandardMessage(char *message){//TODO 
-    message[0] = 'S';
-    message[1] = 16;
-    message[2] = '\n';
+void initStandardMessage(char *message){
+    message[0] = MSG_SRT;
+    message[1] = 0x10;
+    message[2] = MSG_END;
 }
 
 void showHelp(char* progName){

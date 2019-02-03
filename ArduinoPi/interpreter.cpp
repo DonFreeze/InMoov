@@ -66,7 +66,7 @@ void interpret(char *command){
 }
 
 char* buildAnswerString(){
-    typeNumber = 0x255;
+    typeNumber = MSG_END;
     data1 = '\n';
     return start;
 }

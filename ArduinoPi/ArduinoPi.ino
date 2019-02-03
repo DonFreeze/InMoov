@@ -35,11 +35,11 @@ void checkRecivedChar(char recived){
 
 char* buildErrorString(char id, char errorType){
     char msg[6];
-    msg[0] = 0x255;
+    msg[0] = MSG_SRT;
     msg[1] = id;
     msg[2] = ERROR_ASW;
     msg[3] = errorType;
-    msg[4] = 0x255;
+    msg[4] = MSG_END;
     msg[5] = '\n';
 
     return (char*)  &msg[0];

@@ -17,9 +17,16 @@
 #define ERROR_TXUART_CLOSED -30
 #define ERROR_TXUART        -31
 
-#define ERROR_COMPONEND     -41
-#define ERROR_OPTYPE        -42
-#define ERROR_TYPENUMBER    -43
+
+// Arduino ERROR codes
+#define ERROR_ASW            'F'
+#define ERROR_MSG_LENGTH      1
+#define ERROR_COMPONEND       2
+#define ERROR_OPTYPE          3
+
+#define MSG_SRT 0xFF
+#define MSG_END 0xFF
+
 
 
 static const int maxMessageLength = 1 + 1 + 1 + 4 + 1;//Start + Identifierer + OP Type + Value + \0
