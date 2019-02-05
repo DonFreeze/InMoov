@@ -6,12 +6,7 @@
   #include "WProgram.h"
 #endif
 
-char *start;
-char *componend;
-char *opType;
-char *typeNumber;
-char *data1;
-char *data2;
+unsigned char *msg;
 
 void motorRead(){
     //is there somthing to read?
@@ -29,47 +24,45 @@ void eyeWrite(){
     //set LED Eye on/off, color
 }
 
-void interpret(char *command){
-
-    start = &command[0];
-    componend = &command[1];
-    opType = &command[2];
-    typeNumber = &command[3];
-    data1 = &command[4];
-    data2 = &command[5];
-    
-    switch(componend[0]){
+void interpret(unsigned char* message1){
+  msg = message1;
+    switch(msg[1]){
         case MOTOR:
-            if(opType[0] == READ)
+            if(msg[2] == READ)
                 motorRead();
-            else if(opType[0] == WRITE)
+            else if(msg[2] == WRITE)
                 motorWrite();
             else
-                Serial.println(buildErrorString(componend, ERROR_OPTYPE));
+                buildErrorMessage(ERROR_OPTYPE);
             break;
+            
         case EYE:
-            if(opType[0] == READ)
+            if(msg[2] == READ)
                 eyeRead();
-            else if(opType[0] == WRITE)
+            else if(msg[2] == WRITE)
                 eyeWrite();
             else
-                Serial.println(buildErrorString(componend, ERROR_OPTYPE));
+                buildErrorMessage(ERROR_OPTYPE);
             break;
+            
         case STATUS:
-            Serial.println(buildAnswerString());
+            // Nothing to do, just return message
             break;
+            
         default:
-            Serial.println(buildErrorString(componend, ERROR_COMPONEND));
+            buildErrorMessage(ERROR_COMPONEND);
             break;
     }
-    Serial.println(command);
+
+    // Send Answer
+    Serial.println((char*)msg);
 }
 
-char* buildAnswerString(){
-    typeNumber = MSG_END;
-    data1 = '\n';
-    return start;
+void buildErrorMessage(unsigned char errorType){
+  msg[2] = ERROR_ASW;
+  msg[3] = errorType;
 }
+
 
 
 

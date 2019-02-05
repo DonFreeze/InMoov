@@ -25,16 +25,15 @@
 #define ERROR_OPTYPE          3
 
 #define MSG_SRT 0xFF
-#define MSG_END 0xFF
 
 
 
-static const int maxMessageLength = 1 + 1 + 1 + 4 + 1;//Start + Identifierer + OP Type + Value + \0
+static const int messageLength = 1 + 1 + 1 + 4;//Start + Identifierer + OP Type + Value
 static int verify = 0;
 
 int setupUART(int, char*);
 int rxUART(int, char[]);
-int txUART(int, char[], int);
+int txUART(int, char[]);
 void printv(const char*);
 
 

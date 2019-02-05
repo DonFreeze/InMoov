@@ -4,9 +4,8 @@
  */
  
 
-#define MAX_MSG_LENGTH 7
-#define MSG_END 0xFF
-#define MSG_SRT 0xFF
+#define TOTAL_MSG_LENGTH 7
+#define MSG_SRT   0xFF
 
 #define STATUS  0x10
 #define EYE     0x20
@@ -16,13 +15,15 @@
 
 
 // ERROR Codes
-#define ERROR_ASW            'F'
+#define ERROR_ASW             'F'
 #define ERROR_MSG_LENGTH      0x01
 #define ERROR_COMPONEND       0x02
 #define ERROR_OPTYPE          0x03
 
 
-void interpret(char*);
-char* buildErrorString(char, char);
-char* buildAnswerString(void);
+void interpret(unsigned char*);
+void buildErrorMessage(unsigned char);
+void buildAnswerString(void);
+
+
 

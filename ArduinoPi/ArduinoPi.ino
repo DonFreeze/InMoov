@@ -1,49 +1,49 @@
 #include "interpreter.h"
 
-unsigned char command[MAX_MSG_LENGTH];
+unsigned char message[TOTAL_MSG_LENGTH+1];
 int messageLength = 0;
+bool start = false;
   
 void setup(){
     Serial.begin(9600);
+    message[TOTAL_MSG_LENGTH] = '\n';
 }
  
 void loop(){
     if (Serial.available()) {
         unsigned char recived = Serial.read();
-        if(recived){
-          checkRecivedChar(recived);
-        }else{
-          messageLength=0;
-        }
+        //if(recived){
+          buildMessage(recived);
+        //}
     }
 }
 
-void checkRecivedChar(char recived){
-  if(recived == MSG_END){
-      if(messageLength > MAX_MSG_LENGTH){
-        Serial.println(buildErrorString(command[1], ERROR_MSG_LENGTH));
-        return;
-      }
-      interpret(&command[0]);
-      messageLength = 0;
-      memset(&command[0], 0, MAX_MSG_LENGTH);
-  }else{
-      command[messageLength] = recived;
-      messageLength++;
-  }      
+void buildMessage(unsigned char recived){
+  if(recived == MSG_SRT){
+    resetMessage();
+    start = true;
+  }
+  if(!start)
+    return;
+
+  message[messageLength] = recived;
+  messageLength++;    
+  if(messageLength == TOTAL_MSG_LENGTH){
+    interpret(&message[0]);
+    resetMessage();
+  }  
 }
 
-char* buildErrorString(char id, char errorType){
-    char msg[6];
-    msg[0] = MSG_SRT;
-    msg[1] = id;
-    msg[2] = ERROR_ASW;
-    msg[3] = errorType;
-    msg[4] = MSG_END;
-    msg[5] = '\n';
-
-    return (char*)  &msg[0];
+void resetMessage(){
+  messageLength = 0;
+  //memset(&message[0], 0, TOTAL_MSG_LENGTH-1);
+  start = false;
 }
+
+
+
+
+
 
 
 

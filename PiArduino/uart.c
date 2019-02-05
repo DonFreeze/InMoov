@@ -1,11 +1,16 @@
 #include "uart.h"
 
 
-int checkRecivedMessage(char *recivedMessage, char *sendMessage){
-	if(recivedMessage[1] != sendMessage[1] ||
-		recivedMessage[2] != sendMessage[2]){
+int checkRecivedMessage(unsigned char *recivedMessage, unsigned char *sendMessage){
+	
+			for(int i=0; i<7; i++)
+			printf("recived: %d\n",recivedMessage[i]);
+	
+	if(recivedMessage[0] != sendMessage[0] ||
+		recivedMessage[1] != sendMessage[1]){
 
 		printv("Recived != Send\n");
+
 		return -1;
 	}
 	else if(recivedMessage[2] == ERROR_ASW){
@@ -29,15 +34,21 @@ int checkRecivedMessage(char *recivedMessage, char *sendMessage){
 	}else{
 		//no error in message, return Data when read message
 		//TODO
+		printf("Success!\n");
+		if(recivedMessage[3] == 0x01){
+			printf("Data read: %d, %d\n", (int)recivedMessage[4], (int)recivedMessage[5]);
+		}
+
 		return 0;
 	}
+	return 0;
 }
 
-int rxUART(int uart0_filestream, char message[maxMessageLength]){
+int rxUART(int uart0_filestream, char message[messageLength]){
 //----- CHECK FOR ANY RX BYTES -----
 	//if (uart0_filestream != -1)
 	//{
-    for(int i=0; i<5; i++){    //wait 0.5 sec for response
+    for(int i=0; i<20; i++){    //wait 2 sec for response
 		// Read up to 255 characters from the port if they are there
 		char rx_buffer[256];//TODO unsigned char?
 		int rx_length = read(uart0_filestream, (void*)rx_buffer, 255);		//Filestream, buffer to store in, number of bytes to read (max)
@@ -62,7 +73,7 @@ int rxUART(int uart0_filestream, char message[maxMessageLength]){
     return ERROR_NO_RETURN_MESSAGE;
 }
 
-int txUART(int uart0_filestream, char message[maxMessageLength], int messageLength){
+int txUART(int uart0_filestream, char message[messageLength]){
 	
 	if (uart0_filestream != -1){
 		int count = write(uart0_filestream, &message[0], messageLength);		//Filestream, bytes to write, number of bytes to write
