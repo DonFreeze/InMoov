@@ -1,5 +1,4 @@
 
-#if 0
 #include "Motor.h"
 #include <math.h>
 
@@ -63,5 +62,4 @@ int Motor::getMaxAngle()
     return max_angle;
 }
 
-#endif
 

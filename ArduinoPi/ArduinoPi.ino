@@ -1,32 +1,34 @@
 #include "interpreter.h"
+#include "MotorManager.h"
 
 unsigned char message[TOTAL_MSG_LENGTH+1];
 int messageLength = 0;
 bool start = false;
   
 void setup(){
+    MotorManger manager;
     Serial.begin(9600);
     message[TOTAL_MSG_LENGTH] = '\n';
 }
  
 void loop(){
     if (Serial.available()) {
-        unsigned char recived = Serial.read();
-        //if(recived){
-          buildMessage(recived);
+        unsigned char received = Serial.read();
+        //if(received){
+          buildMessage(received);
         //}
     }
 }
 
-void buildMessage(unsigned char recived){
-  if(recived == MSG_SRT){
+void buildMessage(unsigned char received){
+  if(received == MSG_SRT){
     resetMessage();
     start = true;
   }
   if(!start)
     return;
 
-  message[messageLength] = recived;
+  message[messageLength] = received;
   messageLength++;    
   if(messageLength == TOTAL_MSG_LENGTH){
     interpret(&message[0]);
