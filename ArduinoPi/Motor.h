@@ -1,7 +1,7 @@
 /* Robo Project
  * Servo Motor Class
  */
- #if 0
+
 #include <Servo.h>
 #include "Arduino.h"
 
@@ -26,4 +26,4 @@ private:
     
 };
 
-#endif
+

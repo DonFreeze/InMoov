@@ -1,4 +1,5 @@
 #include "interpreter.h"
+#include "MotorManager.h"
 
 #if defined(ARDUINO) && ARDUINO >= 100
   #include "Arduino.h"
@@ -15,6 +16,7 @@ void motorRead(){
 void motorWrite(){
     //Set motor angle
     //digitalWrite(pin, HIGH);
+    updateMotors();
 }
 
 void eyeRead(){
