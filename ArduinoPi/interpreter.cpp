@@ -26,8 +26,8 @@ void eyeWrite(){
     //set LED Eye on/off, color
 }
 
-void interpret(unsigned char* message1){
-  msg = message1;
+void interpret(unsigned char* message){
+  msg = message;
     switch(msg[1]){
         case MOTOR:
             if(msg[2] == READ)

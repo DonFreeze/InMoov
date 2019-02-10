@@ -1,12 +1,10 @@
 #include "interpreter.h"
-#include "MotorManager.h"
 
 unsigned char message[TOTAL_MSG_LENGTH+1];
 int messageLength = 0;
 bool start = false;
   
 void setup(){
-    MotorManger manager;
     Serial.begin(9600);
     message[TOTAL_MSG_LENGTH] = '\n';
 }
@@ -14,18 +12,14 @@ void setup(){
 void loop(){
     if (Serial.available()) {
         unsigned char received = Serial.read();
-        //if(received){
+        if(received){
           buildMessage(received);
-        //}
+        }
     }
 }
 
 void buildMessage(unsigned char received){
-  if(received == MSG_SRT){
-    resetMessage();
-    start = true;
-  }
-  if(!start)
+  if(charNotStart(received))
     return;
 
   message[messageLength] = received;
@@ -36,9 +30,19 @@ void buildMessage(unsigned char received){
   }  
 }
 
+int charNotStart(unsigned char received){
+  if(received == MSG_SRT){
+    resetMessage();
+    start = true;
+  }
+  if(!start)
+    return -1;
+
+  return 0;
+}
+
 void resetMessage(){
   messageLength = 0;
-  //memset(&message[0], 0, TOTAL_MSG_LENGTH-1);
   start = false;
 }
 
