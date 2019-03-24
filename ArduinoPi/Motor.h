@@ -4,6 +4,8 @@
 
 #include <Servo.h>
 #include "Arduino.h"
+#ifndef MOTOR_H
+#define MOTOR_H
 
 #define NUM_MOTORS 5
 
@@ -25,5 +27,4 @@ private:
     Servo myservo;      // servo object to control a servo
     
 };
-
-
+#endif

@@ -1,5 +1,5 @@
 #include "interpreter.h"
-#include "MotorManager.h"
+
 
 #if defined(ARDUINO) && ARDUINO >= 100
   #include "Arduino.h"
@@ -16,7 +16,7 @@ void motorRead(){
 void motorWrite(){
     //Set motor angle
     //digitalWrite(pin, HIGH);
-    updateMotors();
+
 }
 
 void eyeRead(){
@@ -26,12 +26,14 @@ void eyeWrite(){
     //set LED Eye on/off, color
 }
 
-void interpret(unsigned char* message){
+void interpret(unsigned char* message, MotorManager* mm_ptr){
   msg = message;
     switch(msg[1]){
         case MOTOR:
             if(msg[2] == READ)
-                motorRead();
+            {
+                mm_ptr->updateMotors(msg[3]);        
+            }
             else if(msg[2] == WRITE)
                 motorWrite();
             else
@@ -64,10 +66,3 @@ void buildErrorMessage(unsigned char errorType){
   msg[2] = ERROR_ASW;
   msg[3] = errorType;
 }
-
-
-
-
-
-
-

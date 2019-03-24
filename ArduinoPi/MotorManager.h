@@ -5,6 +5,10 @@
 #include "Arduino.h"
 #include "Motor.h"
 
+#ifndef MOTOR_MANAGER_H
+#define MOTOR_MANAGER_H
+
+
 class MotorManager
 {
 
@@ -17,4 +21,4 @@ private:
     Motor motor[5];
     
 };
-
+#endif
