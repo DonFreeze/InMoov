@@ -11,23 +11,25 @@ void setup(){
     Serial.begin(9600);
     message[TOTAL_MSG_LENGTH] = '\n';
     motor_manager->init();
-    
+    pinMode(2, OUTPUT);
+    digitalWrite(2, LOW);
 }
  
 void loop(){
-    if (Serial.available()) {
-        unsigned char received = Serial.read();
-        if(received){
-          buildMessage(received);
+    if (Serial.available() > 0){
+        unsigned char receivedByte = Serial.read();
+        if(receivedByte){
+          buildMessage(receivedByte);
         }
     }
 }
 
-void buildMessage(unsigned char received){
-  if(charNotStart(received))
+void buildMessage(unsigned char receivedByte){
+  
+  if(charNotStart(receivedByte))
     return;
 
-  message[messageLength] = received;
+  message[messageLength] = receivedByte;
   messageLength++;    
   if(messageLength == TOTAL_MSG_LENGTH){
     interpret(&message[0], motor_manager);
@@ -35,8 +37,8 @@ void buildMessage(unsigned char received){
   }  
 }
 
-int charNotStart(unsigned char received){
-  if(received == MSG_SRT){
+int charNotStart(unsigned char receivedByte){
+  if(receivedByte == MSG_START_SEQ){
     resetMessage();
     start = true;
   }

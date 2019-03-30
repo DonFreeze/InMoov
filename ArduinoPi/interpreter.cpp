@@ -28,8 +28,10 @@ void eyeWrite(){
 
 void interpret(unsigned char* message, MotorManager* mm_ptr){
   msg = message;
+  digitalWrite(2, HIGH);
     switch(msg[1]){
         case MOTOR:
+            
             if(msg[2] == READ)
             {
                 mm_ptr->updateMotors(msg[3]);        

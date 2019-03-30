@@ -7,7 +7,7 @@
 #endif
 
 #define TOTAL_MSG_LENGTH 7
-#define MSG_SRT   0xFF
+#define MSG_START_SEQ   0xFF
 
 #define STATUS  0x10
 #define EYE     0x20
