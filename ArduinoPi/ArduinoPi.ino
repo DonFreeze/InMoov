@@ -29,17 +29,20 @@ void readOnSerial(){
 }
 
 void buildMessage(unsigned char receivedByte){
-  checkMessageStart(receivedByte);
-  if(messageLength > 0){
+  if(checkMessageStart(receivedByte)){
     addToMessage(receivedByte);
   }
 }
 
-void checkMessageStart(unsigned char receivedByte){
+bool checkMessageStart(unsigned char receivedByte){
   if(receivedByte == MSG_START_SEQ){
     resetMessage();
-    addToMessage(receivedByte);
+    return true;
   }
+  if(messageLength > 0){
+    return true;
+  }
+  return false;
 }
 
 void resetMessage(){
@@ -52,9 +55,13 @@ void addToMessage(unsigned char byte){
 }
 
 void interpretCompleteMessage(){
-    if(messageLength == TOTAL_MSG_LENGTH){
+  if(messageLength == TOTAL_MSG_LENGTH){
     Interpreter::interpret(&message[0], motor_manager);
+    sendAnswer();
     resetMessage();
   }  
 }
 
+void sendAnswer(){
+  Serial.print((char*)message);
+}

@@ -9,46 +9,26 @@
 
 unsigned char *msg;
 
+// TODO create a List of all Components
+// Componend List has instances like motor and led
+// Create an Interpreter Object and do that in the Konstruktor?
 
 void Interpreter::interpret(unsigned char* message, MotorManager* mm_ptr){
-  msg = message;
-  digitalWrite(2, HIGH);
-    switch(msg[1]){
-        case MOTOR:
-            
-            if(msg[2] == READ)
-            {
-                mm_ptr->updateMotors(msg[3]);        
-            }
-            else if(msg[2] == WRITE)
-                motorWrite();
-            else
-                buildErrorMessage(ERROR_OPTYPE);
-            break;
-            
-        case EYE:
-            if(msg[2] == READ)
-                eyeRead();
-            else if(msg[2] == WRITE)
-                eyeWrite();
-            else
-                buildErrorMessage(ERROR_OPTYPE);
-            break;
-            
-        case STATUS:
-            // Nothing to do, just return message
-            break;
-            
-        default:
-            buildErrorMessage(ERROR_COMPONEND);
-            break;
-    }
+    msg = message;
 
-    // Send Answer
-    Serial.println((char*)msg);
+    if(messageIsValid()){
+
+    }
+}
+
+bool Interpreter::messageIsValid(){
+  // Conponend bigger than List index? error
+  // To big values? Is it posible to validate that?
+  return false;
 }
 
 void Interpreter::buildErrorMessage(unsigned char errorType){
   msg[2] = ERROR_ASW;
   msg[3] = errorType;
+  msg[4] = '\0';
 }

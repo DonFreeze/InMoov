@@ -29,7 +29,8 @@ public:
     static void interpret(unsigned char*, MotorManager* mm_ptr);
 
 private:
-    void buildErrorMessage(unsigned char);
+    static bool messageIsValid();
+    static void buildErrorMessage(unsigned char);
 
 };
 
