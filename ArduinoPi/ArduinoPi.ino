@@ -53,7 +53,7 @@ void addToMessage(unsigned char byte){
 
 void interpretCompleteMessage(){
     if(messageLength == TOTAL_MSG_LENGTH){
-    interpret(&message[0], motor_manager);
+    Interpreter::interpret(&message[0], motor_manager);
     resetMessage();
   }  
 }

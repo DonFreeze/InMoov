@@ -2,9 +2,10 @@
  * Arduino Interpreter for the Raspberry Pi commands
  * Commands are specified in ReadMe file
  */
-#ifndef MOTOR_MANAGER_H
+#ifndef INTERPRETER_H
+#define INTERPRETER_H
+
 #include "MotorManager.h"
-#endif
 
 #define TOTAL_MSG_LENGTH 7
 #define MSG_START_SEQ   0xFF
@@ -22,7 +23,17 @@
 #define ERROR_COMPONEND       0x02
 #define ERROR_OPTYPE          0x03
 
+class Interpreter
+{
+public:
+    static void interpret(unsigned char*, MotorManager* mm_ptr);
 
-void interpret(unsigned char*, MotorManager* mm_ptr);
-void buildErrorMessage(unsigned char);
-void buildAnswerString(void);
+private:
+    void buildErrorMessage(unsigned char);
+
+};
+
+
+
+
+#endif

@@ -1,4 +1,4 @@
-#include "interpreter.h"
+#include "Interpreter.h"
 
 
 #if defined(ARDUINO) && ARDUINO >= 100
@@ -9,24 +9,8 @@
 
 unsigned char *msg;
 
-void motorRead(){
-    //is there somthing to read?
-    //digitalRead(pin);
-}
-void motorWrite(){
-    //Set motor angle
-    //digitalWrite(pin, HIGH);
 
-}
-
-void eyeRead(){
-    //is there something to read?
-}
-void eyeWrite(){
-    //set LED Eye on/off, color
-}
-
-void interpret(unsigned char* message, MotorManager* mm_ptr){
+void Interpreter::interpret(unsigned char* message, MotorManager* mm_ptr){
   msg = message;
   digitalWrite(2, HIGH);
     switch(msg[1]){
@@ -64,7 +48,7 @@ void interpret(unsigned char* message, MotorManager* mm_ptr){
     Serial.println((char*)msg);
 }
 
-void buildErrorMessage(unsigned char errorType){
+void Interpreter::buildErrorMessage(unsigned char errorType){
   msg[2] = ERROR_ASW;
   msg[3] = errorType;
 }
