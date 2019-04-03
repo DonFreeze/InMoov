@@ -1,4 +1,4 @@
-#include "interpreter.h"
+#include "Interpreter.h"
 #include "MotorManager.h"
 
 unsigned char message[TOTAL_MSG_LENGTH+1];
@@ -22,10 +22,11 @@ void loop(){
 
 void readOnSerial(){
   unsigned char receivedByte = Serial.read();
-  if(receivedByte){
-    buildMessage(receivedByte);
-    interpretCompleteMessage();
-  }
+  if(receivedByte == 0xFF)
+    return;
+  
+  buildMessage(receivedByte);
+  interpretCompleteMessage();
 }
 
 void buildMessage(unsigned char receivedByte){
