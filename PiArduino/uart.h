@@ -24,7 +24,7 @@
 #define ERROR_COMPONEND       2
 #define ERROR_OPTYPE          3
 
-#define MSG_SRT 0xFF
+#define MSG_SRT             0xFE
 
 
 
