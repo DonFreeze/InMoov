@@ -2,7 +2,7 @@
 
 unsigned char message[TOTAL_MSG_LENGTH+1];
 int messageLength = 0;
-Interpreter interpreter;
+Interpreter* interpreter;
   
 void setup(){
   Serial.begin(9600);
@@ -53,7 +53,7 @@ void addToMessage(unsigned char byte){
 
 void interpretCompleteMessage(){
   if(messageLength == TOTAL_MSG_LENGTH){
-    interpreter.interpret(&message[0]);
+    interpreter->interpret(&message[0]);
     sendAnswer();
     resetMessage();
   }  

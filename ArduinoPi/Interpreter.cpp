@@ -13,11 +13,18 @@ unsigned char *msg;
 // Componend List has instances like motor and led
 // Create an Interpreter Object and do that in the Konstruktor?
 
-void Interpreter::interpret(unsigned char* message, MotorManager* mm_ptr){
+Interpreter::Interpreter(){
+  
+    motor_manager = new MotorManager();
+  
+}
+
+
+void Interpreter::interpret(unsigned char* message){
     msg = message;
 
     if(messageIsValid()){
-      // Do stuff
+      motor_manager->updateMotors(msg[3]);      
     }
 }
 

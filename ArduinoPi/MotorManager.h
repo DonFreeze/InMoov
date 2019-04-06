@@ -3,22 +3,22 @@
  */
 
 #include "Arduino.h"
-#include "Motor.h"
+#include <VarSpeedServo.h>
 
 #ifndef MOTOR_MANAGER_H
 #define MOTOR_MANAGER_H
 
+#define MOTOR_NUMBER 2
 
 class MotorManager
 {
 
 public:
-    MotorManger();
-    void init();
-    void updateMotors(int* values); 
+    MotorManager();
+    void updateMotors(unsigned char* values); 
 private:
-    int num_motors;
-    Motor motor[5];
+
+    VarSpeedServo myservo[MOTOR_NUMBER]; 
     
 };
 #endif

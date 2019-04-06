@@ -26,12 +26,13 @@
 class Interpreter
 {
 public:
-    static void interpret(unsigned char*, MotorManager* mm_ptr);
+    Interpreter();
+     void interpret(unsigned char* message);
 
 private:
-    static bool messageIsValid();
-    static void buildErrorMessage(unsigned char);
-
+     bool messageIsValid();
+     void buildErrorMessage(unsigned char);
+     MotorManager* motor_manager;
 };
 
 
