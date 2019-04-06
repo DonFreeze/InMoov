@@ -1,23 +1,19 @@
 #include "Interpreter.h"
-#include "MotorManager.h"
 
 unsigned char message[TOTAL_MSG_LENGTH+1];
 int messageLength = 0;
-
-MotorManager* motor_manager = new MotorManager;
+Interpreter interpreter;
   
 void setup(){
-    Serial.begin(9600);
-    message[TOTAL_MSG_LENGTH] = '\n';
-    motor_manager->init();
-    pinMode(2, OUTPUT);
-    digitalWrite(2, LOW);
+  Serial.begin(9600);
+  message[TOTAL_MSG_LENGTH] = '\n';
+  interpreter = new Interpreter();
 }
  
 void loop(){
-    if (Serial.available() > 0){
-      readOnSerial();
-    }
+  if (Serial.available() > 0){
+    readOnSerial();
+  }
 }
 
 void readOnSerial(){
@@ -57,7 +53,7 @@ void addToMessage(unsigned char byte){
 
 void interpretCompleteMessage(){
   if(messageLength == TOTAL_MSG_LENGTH){
-    Interpreter::interpret(&message[0], motor_manager);
+    interpreter.interpret(&message[0]);
     sendAnswer();
     resetMessage();
   }  
