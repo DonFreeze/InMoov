@@ -31,3 +31,23 @@ void MotorManager::updateMotors(unsigned char* values)
   }
 
 }
+
+void turnHeadToAngle(MotorValues* head_values)
+{
+  if (head_values != NULL)
+  {
+    myservo[7].write(head_values.horizontal,head_values.speed);
+    myservo[8].write(head_values.vertical,head_values.speed);
+  }
+
+}
+
+void turnEyesToAngle(MotorValues* eyes_values)
+{
+  if (eyes_values != NULL)
+  {
+    myservo[9].write(eyes_values.horizontal,eyes_values.speed);
+    myservo[10].write(eyes_values.vertical,eyes_values.speed);
+  }
+
+}
